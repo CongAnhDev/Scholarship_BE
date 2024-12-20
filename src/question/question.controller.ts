@@ -34,7 +34,7 @@ export class QuestionController {
   }
 
 
-  @SkipCheckPermission()
+  @Public()
   @Get(':id')
   @ResponseMessage("Fetch a question with id")
   findOne(@Param('id') id: string) {

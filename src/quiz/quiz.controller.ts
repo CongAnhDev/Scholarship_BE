@@ -32,7 +32,7 @@ export class QuizController {
     return this.quizService.findAll(+currentPage, +limit, qs); // Modify this line
   }
 
-  @SkipCheckPermission()
+  @Public()
   @Get(':id')
   @ResponseMessage("Fetch a quiz with id")
   findOne(@Param('id') id: string) {
