@@ -3,16 +3,16 @@ import mongoose, { HydratedDocument } from 'mongoose';
 
 export type QuestionDocument = HydratedDocument<Question>;
 
-@Schema({ timestamps: true })
-export class Question {
-    @Prop()
-    question: string;
+// @Schema({ timestamps: true })
+// export class Question {
+//     @Prop()
+//     question: string;
 
-    @Prop()
-    option: string[];
+//     @Prop()
+//     option: string[];
 
-    @Prop()
-    answer: string;
+//     @Prop()
+//     answer: string;
 
     @Prop()
     quiz: number;
