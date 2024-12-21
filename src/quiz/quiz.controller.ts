@@ -25,7 +25,7 @@ export class QuizController {
   @Get()
   @ResponseMessage("Fetch List quiz with paginate")
   findAll(
-    @Query("current") currentPage: string,
+    @Query("current") currentPage: string, //test
     @Query("pageSize") limit: string,
     @Query() qs: string,
   ) {
