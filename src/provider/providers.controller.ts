@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 @Controller('providers')
 export class ProvidersController {
-  constructor(private readonly providersService: ProviderService,
+  constructor(private readonly providersService: ProviderService, //private
 
 
   ) { }
