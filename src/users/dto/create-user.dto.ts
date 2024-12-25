@@ -27,38 +27,42 @@ import mongoose from 'mongoose';
 
 // DTO để tạo người dùng (admin)
 export class CreateUserDto {
-    @IsNotEmpty() // Trường này không được để trống
+    @IsOptional() // Trường này không được để trống
     name: string; // Tên người dùng
 
     @IsEmail() // Xác minh email hợp lệ
-    @IsNotEmpty() // Trường này không được để trống
+    @IsOptional() // Trường này không được để trống
     email: string; // Email người dùng
 
-    @IsNotEmpty() // Trường này không được để trống
+    @IsOptional() // Trường này không được để trống
     password: string; // Mật khẩu
 
     @IsOptional()// Trường này không được để trống
     avatar: string; // Đường dẫn avatar
 
-    @IsNotEmpty() // Trường này không được để trống
+    @IsOptional() // Trường này không được để trống
     age: number; // Tuổi của người dùng
 
-    @IsNotEmpty() // Trường này không được để trống
+    @IsOptional() // Trường này không được để trống
     address: string; // Địa chỉ
 
     @IsPhoneNumber('VN') // Số điện thoại phải thuộc mã vùng Việt Nam
-    @IsNotEmpty() // Trường này không được để trống
+    @IsOptional() // Trường này không được để trống
     phone: string; // Số điện thoại của người dùng
 
-    @IsNotEmpty() // Trường này không được để trống
+    @IsOptional() // Trường này không được để trống
     gender: string; // Giới tính của người dùng
 
     @IsOptional() // Trường này không được để trống
     isActive: boolean; // Trạng thái hoạt động (true/false)
 
-    @IsOptional() // Xác minh đây là ObjectId hợp lệ của MongoDB
-    @IsNotEmpty() // Trường này không được để trống
+    @IsOptional()
+    @IsMongoId() // Xác minh đây là ObjectId hợp lệ của MongoDB
     role: mongoose.Schema.Types.ObjectId; // Vai trò của người dùng
+
+    @IsOptional()
+    @IsMongoId() // Xác minh đây là ObjectId hợp lệ của MongoDB
+    provider: mongoose.Schema.Types.ObjectId; // Vai trò của người dùng
 }
 
 // DTO để đăng ký người dùng

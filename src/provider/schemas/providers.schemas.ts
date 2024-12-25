@@ -9,37 +9,16 @@ export class Provider {
     name: string;
 
     @Prop()
-    address: string;
-
-    @Prop()
-    city: string;
+    address: string[];
 
     @Prop()
     description: string;
 
     @Prop()
-    quantity: number;
-
-    @Prop()
-    topVN: number;
-
-    @Prop()
-    topWorld: number;
-
-    @Prop()
     logo: string;
 
     @Prop()
-    info: string;
-
-    @Prop()
-    part: string;
-
-    @Prop()
     background: string;
-
-    @Prop()
-    gallery: string[];
 
     @Prop({ type: Object })
     createdBy: {

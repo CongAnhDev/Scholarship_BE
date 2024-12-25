@@ -56,6 +56,9 @@ export class CreateScholarshipDto {
     value: string
 
     @IsOptional()
+    provider: mongoose.Schema.Types.ObjectId;
+
+    @IsOptional()
     isActive: boolean;
 }
 

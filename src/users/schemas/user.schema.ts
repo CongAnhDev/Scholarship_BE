@@ -41,8 +41,11 @@ export class User {
     @Prop() // Thời gian hết hạn mã xác thực
     codeExpired: Date;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Role.name }) // Liên kết với Role qua ObjectId
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Role.name })
     role: mongoose.Schema.Types.ObjectId;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Provider.name })
+    provider: mongoose.Schema.Types.ObjectId;
 
     @Prop() // Refresh token dùng cho quản lý phiên
     refreshToken: string;

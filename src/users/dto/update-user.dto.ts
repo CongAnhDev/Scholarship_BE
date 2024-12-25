@@ -1,9 +1,6 @@
 import { OmitType } from '@nestjs/mapped-types';
 import { CreateUserDto } from './create-user.dto';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
 
-// DTO để cập nhật thông tin người dùng
-export class UpdateUserDto extends OmitType(CreateUserDto, ['password', 'email'] as const) {
-    @IsNotEmpty()
-    _id: string;
-}
+export class UpdateUserDto extends PartialType(CreateUserDto) { }

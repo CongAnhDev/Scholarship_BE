@@ -2,9 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Provider } from 'src/provider/schemas/providers.schemas';
 
-export type ScholarshipDocument = HydratedDocument<Scholarship> & {
-    provider?: Provider; // Optional populated provider
-};
+
+export type ScholarshipDocument = HydratedDocument<Scholarship>;
 
 @Schema({ timestamps: true })
 export class Scholarship {
@@ -43,6 +42,9 @@ export class Scholarship {
 
     @Prop()
     description: string;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Provider.name })
+    provider: mongoose.Schema.Types.ObjectId;
 
     @Prop({ default: true })
     isActive: boolean;

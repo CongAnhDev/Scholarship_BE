@@ -59,13 +59,17 @@ export class UsersController {
     return foundUser
   }
 
-  @ResponseMessage("Update a User")
-  @SkipCheckPermission()
-  @Patch()
-  async update(@Body() updateUserDto: UpdateUserDto, @User() user: IUser) {
-    let updatedUser = await this.usersService.update(updateUserDto, user);
-    return updatedUser;
+  @Patch(':id')
+  @ResponseMessage("Update a user")
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @User() user: IUser
+
+  ) {
+    return this.usersService.update(id, updateUserDto, user);
   }
+
 
   @ResponseMessage("Delete a User")
   @Delete(':id')
