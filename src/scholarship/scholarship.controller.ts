@@ -50,6 +50,12 @@ export class ScholarshipController {
     return this.scholarshipService.getListCountry();
   }
 
+  @Public()
+  @Get('provider/:providerId')
+  @ResponseMessage("Fetch scholarships by provider ID")
+  findByProvider(@Param('providerId') providerId: string) {
+    return this.scholarshipService.findByProvider(providerId);
+  }
 
   // @Public()
   // @Get('list-location')
@@ -68,13 +74,6 @@ export class ScholarshipController {
   ) {
     return this.scholarshipService.findAll(+currentPage, +limit, qs); // Modify this line
   }
-
-  // @Public()
-  // @Get('search-list-scholarship')
-  // @ResponseMessage("get list scholarship of a provider")
-  // searchByProvider(@Query('id') id: string) {
-  //   return this.scholarshipService.searchByProvider(id);
-  // }
 
   @Public()
   @Get(':id')

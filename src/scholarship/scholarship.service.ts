@@ -217,4 +217,8 @@ export class ScholarshipService {
       location: formattedLocations
     };
   }
+
+  async findByProvider(providerId: string): Promise<Scholarship[]> {
+    return this.scholarshipModel.find({ provider: providerId }).exec();
+  }
 }
