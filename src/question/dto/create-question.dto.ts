@@ -10,7 +10,9 @@ export class CreateQuestionDto {
     option: string[];
 
     @IsNotEmpty()
-    answer: string;
+    @IsArray()
+    @IsString({ each: true })
+    answer: string[];
 
     @IsNotEmpty()
     @IsNumber()
