@@ -50,13 +50,6 @@ export class ScholarshipController {
     return this.scholarshipService.getListCountry();
   }
 
-  @Public()
-  @Get('provider/:providerId')
-  @ResponseMessage("Fetch scholarships by provider ID")
-  findByProvider(@Param('providerId') providerId: string) {
-    return this.scholarshipService.findByProvider(providerId);
-  }
-
   // @Public()
   // @Get('list-location')
   // @ResponseMessage("Fetch all location")

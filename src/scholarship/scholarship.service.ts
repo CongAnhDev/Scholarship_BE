@@ -22,12 +22,12 @@ export class ScholarshipService {
   ) { }
   async create(createScholarshipDto: CreateScholarshipDto, user: IUser) {
     const {
-      name, level, continent, quantity, major, location, image, ielts, GPA, pay, value, provider,
+      name, level, continent, quantity, major, location, image, ielts, GPA, pay, value,
       description, isActive
     } = createScholarshipDto;
 
     let newScholarship = await this.scholarshipModel.create({
-      name, level, continent, quantity, major, location, image, ielts, GPA, pay, value, provider,
+      name, level, continent, quantity, major, location, image, ielts, GPA, pay, value,
       description, isActive,
       createdBy: {
         _id: user._id,
@@ -218,7 +218,4 @@ export class ScholarshipService {
     };
   }
 
-  async findByProvider(providerId: string): Promise<Scholarship[]> {
-    return this.scholarshipModel.find({ provider: providerId }).exec();
-  }
 }
