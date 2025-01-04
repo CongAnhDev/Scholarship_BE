@@ -1,20 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Provider } from 'src/provider/schemas/providers.schemas';
 
 
-
-export type ScholarshipDocument = HydratedDocument<Scholarship>;
+export type ScholarProvDocument = HydratedDocument<ScholarProv>;
 
 @Schema({ timestamps: true })
-export class Scholarship {
+export class ScholarProv {
     @Prop()
     name: string;
 
     @Prop()
     image: string[];
 
-    @Prop()
-    continent: string;
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Provider.name })
+    provider: mongoose.Schema.Types.ObjectId;
 
     @Prop()
     location: string;
@@ -71,4 +71,4 @@ export class Scholarship {
     updateAt: Date;
 }
 
-export const ScholarshipSchema = SchemaFactory.createForClass(Scholarship);
+export const ScholarProvSchema = SchemaFactory.createForClass(ScholarProv);

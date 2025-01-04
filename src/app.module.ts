@@ -29,6 +29,7 @@ import { SubscribersModule } from './subscribers/subscribers.module';
 import { UsersModule } from './users/users.module';
 import { CrawlerModule } from './crawler/crawler.module';
 import { NewsModule } from './news/news.module';
+import { ScholarProvModule } from './scholar-prov/scholar-prov.module';
 
 @Module({
   imports: [
@@ -78,6 +79,7 @@ import { NewsModule } from './news/news.module';
     BlogModule,
     CrawlerModule,
     NewsModule,
+    ScholarProvModule,
   ],
   controllers: [AppController],
   providers: [AppService],
