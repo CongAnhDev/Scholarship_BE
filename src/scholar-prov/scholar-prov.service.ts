@@ -114,4 +114,15 @@ export class ScholarProvService {
       _id: id
     })
   }
+
+  async getListAll() {
+    const scholarships = await this.scholarProvModule.find().select('name').exec()
+    return {
+      scholarships
+    }
+  }
+
+  async findByProvider(providerId: string): Promise<ScholarProv[]> {
+    return this.scholarProvModule.find({ provider: providerId }).exec();
+  }
 }

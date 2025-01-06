@@ -21,6 +21,20 @@ export class ScholarProvController {
   }
 
   @Public()
+  @Get('all-name')
+  @ResponseMessage("Fetch all name scholar-prov")
+  getListAll() {
+    return this.scholarProvService.getListAll();
+  }
+
+  @Public()
+  @Get('provider/:providerId')
+  @ResponseMessage("Fetch scholarships by provider ID")
+  findByProvider(@Param('providerId') providerId: string) {
+    return this.scholarProvService.findByProvider(providerId);
+  }
+
+  @Public()
   @Get()
   @ResponseMessage("Fetch List Scholarship with paginate")
   findAll(
