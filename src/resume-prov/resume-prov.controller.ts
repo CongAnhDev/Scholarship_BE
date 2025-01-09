@@ -59,4 +59,15 @@ export class ResumeProvController {
   remove(@Param('id') id: string, @User() user: IUser) {
     return this.resumeProvService.remove(id, user);
   }
+
+  @Post('excel')
+  @Public()
+  @ResponseMessage('export resumes to excel')
+  export(
+    @Query('current') currentPage: string,
+    @Query('pageSize') limit: string,
+    @Query() qs: string,
+  ) {
+    return this.resumeProvService.export(+currentPage, +limit, qs);
+  }
 }

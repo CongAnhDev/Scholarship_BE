@@ -170,4 +170,38 @@ export class ResumeProvService {
       ]);
   }
 
+  async export(currentPage: number, limit: number, qs: string) {
+    const { filter, population, projection } = aqp(qs);
+    delete filter.current;
+    delete filter.pageSize;
+
+    const offset = (+currentPage - 1) * (+limit);
+    const defaultLimit = +limit ? +limit : 10;
+
+    // Query tổng số bản ghi
+    const totalItems = await this.resumeProModel.countDocuments(filter);
+
+    // Tính tổng số trang
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    // Thực hiện query học bổng
+    const result = await this.resumeProModel
+      .find(filter)
+      .skip(offset)
+      .limit(defaultLimit)
+      .sort({ createdAt: -1 })
+      .populate(population)
+      .select(projection as any)
+      .exec();
+
+    return {
+      meta: {
+        current: currentPage, // Trang hiện tại
+        pageSize: limit, // Số bản ghi mỗi trang
+        pages: totalPages, // Tổng số trang
+        total: totalItems, // Tổng số bản ghi
+      },
+      result, // Kết quả trả về
+    };
+  }
 }
