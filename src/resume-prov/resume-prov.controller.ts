@@ -16,8 +16,14 @@ export class ResumeProvController {
     return this.resumeProvService.create(createUserCvProDto, user);
   }
 
-  @Get()
+  @Post('by-user')
   @SkipCheckPermission()
+  @ResponseMessage('Get Resumes by User')
+  getResumesByUser(@User() user: IUser) {
+    return this.resumeProvService.findByUsers(user);
+  }
+
+  @Get()
   @ResponseMessage('Fetch all resumes with pagination')
   findAll(
     @Query('current') currentPage: string,

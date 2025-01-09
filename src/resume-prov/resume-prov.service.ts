@@ -155,4 +155,19 @@ export class ResumeProvService {
       _id,
     });
   }
+
+  async findByUsers(user: IUser) {
+    return await this.resumeProModel
+      .find({
+        userId: user._id,
+      })
+      .sort('-createdAt')
+      .populate([
+        {
+          path: 'scholarProv',
+          select: { name: 1 },
+        },
+      ]);
+  }
+
 }
