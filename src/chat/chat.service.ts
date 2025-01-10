@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import aqp from 'api-query-params';
-import mongoose, { Types } from 'mongoose';
+import mongoose, { FilterQuery, Types } from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { CreateMessageDto } from 'src/chat/dto/create-message.dto';
 import { IChatService } from 'src/chat/interfaces/chat.service.interface';
@@ -22,7 +22,7 @@ export class ChatService implements IChatService {
     @InjectModel(Conversation.name)
     private conversationModel: SoftDeleteModel<ConversationDocument>,
     private userService: UsersService,
-  ) { }
+  ) {}
   closeConversation(conversationId: string): Promise<ConversationDocument> {
     return this.conversationModel.findByIdAndUpdate(
       conversationId,
@@ -89,10 +89,15 @@ export class ChatService implements IChatService {
       await this.conversationModel.find({ ...filter, user: user._id })
     ).length;
     const totalPages = Math.ceil(totalItems / defaultLimit);
-    const query =
+    const query: FilterQuery<any> =
       user.role.name.toUpperCase() === 'SUPER_ADMIN'
         ? {}
-        : { user: new Types.ObjectId(user._id) };
+        : {
+            $or: [
+              { user: new Types.ObjectId(user._id) },
+              { staff: new Types.ObjectId(user._id) },
+            ],
+          };
     // const result = await this.conversationModel
     //   .find({
     //     ...find,

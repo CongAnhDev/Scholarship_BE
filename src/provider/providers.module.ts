@@ -6,13 +6,14 @@ import { ProvidersController } from './providers.controller';
 import { User, UserSchema } from 'src/users/schemas/user.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([
-    { name: Provider.name, schema: ProviderSchema },
-    { name: User.name, schema: UserSchema }
-
-  ])],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Provider.name, schema: ProviderSchema },
+      { name: User.name, schema: UserSchema },
+    ]),
+  ],
   controllers: [ProvidersController],
   providers: [ProviderService],
-  exports: [ProviderService]
+  exports: [ProviderService],
 })
-export class ProviderModule { }
+export class ProviderModule {}

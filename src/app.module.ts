@@ -11,11 +11,14 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { BlogModule } from './blog/blog.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { CrawlerModule } from './crawler/crawler.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { DatabasesModule } from './databases/databases.module';
 import { FilesModule } from './files/files.module';
 import { HealthModule } from './health/health.module';
 import { InvitationModule } from './invitation/invitation.module';
 import { MailModule } from './mail/mail.module';
+import { NewsModule } from './news/news.module';
 import { PayOSModule } from './payos/payos.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { ProviderModule } from './provider/providers.module';
@@ -26,9 +29,8 @@ import { RolesModule } from './roles/roles.module';
 import { ScholarshipModule } from './scholarship/scholarship.module';
 import { StudyModule } from './study/study.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
+import { TransactionModule } from './transaction/transaction.module';
 import { UsersModule } from './users/users.module';
-import { CrawlerModule } from './crawler/crawler.module';
-import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [
@@ -55,6 +57,8 @@ import { NewsModule } from './news/news.module';
       isGlobal: true,
     }),
 
+    TransactionModule,
+    DashboardModule,
     UsersModule,
     AuthModule,
     ProviderModule,
@@ -82,4 +86,4 @@ import { NewsModule } from './news/news.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

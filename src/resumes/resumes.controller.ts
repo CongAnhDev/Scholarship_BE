@@ -2,9 +2,9 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Delete,
   Get,
   HttpCode,
+  Logger,
   Param,
   Patch,
   Post,
@@ -15,6 +15,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CheckoutResponseDataType } from '@payos/node/lib/type';
+import { Types } from 'mongoose';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import {
   Public,
@@ -23,19 +24,21 @@ import {
   User,
 } from 'src/decorator/customize';
 import { PayOSService } from 'src/payos/payos.service';
+import { TransactionService } from 'src/transaction/transaction.service';
 import { IUser } from 'src/users/users.interface';
 import { CreateUserCvDto } from './dto/create-resume.dto';
 import { ResumesService } from './resumes.service';
-import mongoose, { Types } from 'mongoose';
 
 @ApiTags('resumes')
 @Controller('resumes')
 export class ResumesController {
+  private readonly logger = new Logger(ResumesController.name);
   constructor(
     private readonly resumesService: ResumesService,
     private readonly paymentService: PayOSService,
+    private readonly transactionService: TransactionService,
     private readonly cloudinaryService: CloudinaryService,
-  ) { }
+  ) {}
 
   @Post()
   @SkipCheckPermission()
@@ -122,6 +125,19 @@ export class ResumesController {
       resume.status === 'Đang chờ thanh toán'
         ? 'Đã thanh toán'
         : 'Đã thanh toán lần 2';
+    // Register transaction after payment success
+    this.transactionService
+      .createTransaction({
+        amount: webhookData.amount,
+        createdAt: new Date(),
+        currency: 'VND',
+        resume: resume._id,
+        transactionDateTime: webhookData.transactionDateTime,
+        updateAt: new Date(),
+      })
+      .catch((err) => {
+        this.logger.error('Error when save transaction', err);
+      });
     return this.resumesService.updateStatusByOrderCode(orderCode, status);
   }
 
@@ -224,10 +240,6 @@ export class ResumesController {
 
       let payment: CheckoutResponseDataType | undefined;
       let newOrderCode = orderCode;
-
-      console.log('Status: ', status);
-      console.log('OrderCode: ', orderCode);
-      console.log('will payment: ', status === 'Thanh toán lần 2');
       if (status === 'Thanh toán lần 2') {
         newOrderCode = this.resumesService.generateOrderCode();
         payment = await this.paymentService.createPaymentLink({

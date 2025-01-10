@@ -2,7 +2,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import aqp from 'api-query-params';
-import mongoose, { PipelineStage, Types } from 'mongoose';
+import mongoose, { PipelineStage } from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { Provider } from 'src/provider/schemas/providers.schemas';
 import { User } from 'src/users/schemas/user.schema'; // Add this import
@@ -20,7 +20,7 @@ export class ResumesService {
     @InjectModel(User.name) // Add this line
     private userModel: mongoose.Model<User>, // Add this line
     private readonly mailerService: MailerService,
-  ) { }
+  ) {}
 
   async create(createUserCvDto: CreateUserCvDto, user: IUser) {
     const { urlCV, scholarship, staff } = createUserCvDto;
@@ -91,7 +91,8 @@ export class ResumesService {
         },
       },
       {
-        $lookup: { // Add this lookup stage
+        $lookup: {
+          // Add this lookup stage
           from: 'users',
           localField: 'staff',
           foreignField: '_id',
@@ -99,7 +100,8 @@ export class ResumesService {
         },
       },
       {
-        $unwind: { // Unwind the user array
+        $unwind: {
+          // Unwind the user array
           path: '$user',
           preserveNullAndEmptyArrays: true,
         },
@@ -121,7 +123,7 @@ export class ResumesService {
           'scholarship.name': 1,
           'scholarship._id': 1,
           'user.name': 1, // Project user name
-          'user._id': 1,  // Project user ID
+          'user._id': 1, // Project user ID
           ...projection,
         },
       },
@@ -267,7 +269,8 @@ export class ResumesService {
     });
   }
 
-  async updateStaff(id: string, staff: mongoose.Types.ObjectId, user: IUser) { // Use Types.ObjectId
+  async updateStaff(id: string, staff: mongoose.Types.ObjectId, user: IUser) {
+    // Use Types.ObjectId
     const updated = await this.resumeModel.updateOne(
       { _id: id },
       {
@@ -307,5 +310,34 @@ export class ResumesService {
 
   async updateOrderCode(_id: string, orderCode: number) {
     return await this.resumeModel.updateOne({ _id }, { orderCode });
+  }
+
+  async getTotals() {
+    const total = await this.resumeModel.countDocuments();
+    return total;
+  }
+
+  async getTotalsByStatus(status: string) {
+    const total = await this.resumeModel.countDocuments({ status });
+    return total;
+  }
+
+  async getAllGroupBy(groupBy?: 'day' | 'month') {
+    const pipelines: PipelineStage[] = [
+      {
+        $group: {
+          _id: {
+            year: { $year: '$createdAt' },
+            ...(groupBy === 'day'
+              ? { day: { $dayOfMonth: '$createdAt' } }
+              : groupBy === 'month'
+                ? { month: { $month: '$createdAt' } }
+                : {}),
+          },
+          total: { $sum: 1 },
+        },
+      },
+    ];
+    return this.resumeModel.aggregate(pipelines);
   }
 }
