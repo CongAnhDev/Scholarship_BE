@@ -30,7 +30,7 @@ export class UsersService {
     private roleModel: SoftDeleteModel<RoleDocument>,
 
     private readonly mailerService: MailerService,
-  ) {}
+  ) { }
 
   getHashPassword = (password: string) => {
     const salt = genSaltSync(10);
@@ -55,6 +55,7 @@ export class UsersService {
       phone,
       address,
       role,
+      provider,
       isActive,
     } = createUserDto;
 
@@ -78,6 +79,7 @@ export class UsersService {
       phone,
       address,
       role,
+      provider,
 
       createdBy: {
         _id: user._id,
@@ -508,18 +510,19 @@ export class UsersService {
     return compareSync(password, hash);
   }
 
-  async update(updateUserDto: UpdateUserDto, user: IUser) {
-    const updated = await this.userModel.updateOne(
-      { _id: updateUserDto._id },
+  async update(id: string, updateUserDto: UpdateUserDto, user: IUser) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return `not found user`;
+    }
+    return await this.userModel.updateOne(
+      { _id: id },
       {
         ...updateUserDto,
         updatedBy: {
           _id: user._id,
-          email: user.email,
-        },
-      },
-    );
-    return updated;
+          email: user.email
+        }
+      })
   }
 
   async remove(id: string, user: IUser) {

@@ -217,4 +217,5 @@ export class ScholarshipService {
       location: formattedLocations
     };
   }
+
 }

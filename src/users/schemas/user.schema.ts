@@ -67,8 +67,59 @@ export class User {
   @Prop() // Thời gian tạo tài liệu (do schema tự động thêm)
   createdAt: Date;
 
-  @Prop() // Thời gian cập nhật tài liệu (do schema tự động thêm)
-  updateAt: Date;
+    @Prop() // Số điện thoại người dùng
+    phone: string;
+
+    @Prop() // Giới tính người dùng
+    gender: string;
+
+    @Prop() // Tuổi của người dùng
+    age: number;
+
+    @Prop() // Địa chỉ của người dùng
+    address: string;
+
+    @Prop({ default: false }) // Trạng thái kích hoạt tài khoản, mặc định là `false`
+    isActive: boolean;
+
+    @Prop() // Mã xác thực
+    codeId: string;
+
+    @Prop() // Thời gian hết hạn mã xác thực
+    codeExpired: Date;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Role.name })
+    role: mongoose.Schema.Types.ObjectId;
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Provider.name })
+    provider: mongoose.Schema.Types.ObjectId;
+
+    @Prop() // Refresh token dùng cho quản lý phiên
+    refreshToken: string;
+
+    @Prop({ type: Object }) // Thông tin người tạo tài liệu
+    createdBy: {
+        _id: mongoose.Schema.Types.ObjectId;
+        email: string;
+    };
+
+    @Prop({ type: Object }) // Thông tin người cập nhật tài liệu
+    updatedBy: {
+        _id: mongoose.Schema.Types.ObjectId;
+        email: string;
+    };
+
+    @Prop({ type: Object }) // Thông tin người xóa tài liệu
+    deletedBy: {
+        _id: mongoose.Schema.Types.ObjectId;
+        email: string;
+    };
+
+    @Prop() // Thời gian tạo tài liệu (do schema tự động thêm)
+    createdAt: Date;
+
+    @Prop() // Thời gian cập nhật tài liệu (do schema tự động thêm)
+    updateAt: Date;
 }
 
 // Tạo schema MongoDB từ class User

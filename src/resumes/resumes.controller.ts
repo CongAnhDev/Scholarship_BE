@@ -77,7 +77,7 @@ export class ResumesController {
         items: [
           {
             name: _id.toString(),
-            price: 1000,
+            price: 0,
             quantity: 1,
           },
         ],
@@ -189,7 +189,7 @@ export class ResumesController {
       items: [
         {
           name: _id.toString(),
-          price: 1000,
+          price: 0,
           quantity: 1,
         },
       ],
@@ -251,7 +251,7 @@ export class ResumesController {
           items: [
             {
               name: _id.toString(),
-              price: 1000,
+              price: 0,
               quantity: 1,
             },
           ],
@@ -283,5 +283,12 @@ export class ResumesController {
       console.log(error);
       throw new BadRequestException(error.message);
     }
+  }
+
+  @ResponseMessage("Delete a resume")
+  @SkipCheckPermission()
+  @Delete(':id')
+  remove(@Param('id') id: string, @User() user: IUser) {
+    return this.resumesService.remove(id, user);
   }
 }

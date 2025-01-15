@@ -36,9 +36,7 @@ export class ProviderService {
   }
 
   async getAllNames() {
-    return await this.providerModel
-      .find({}, { name: 1, city: 1, _id: 0 })
-      .exec();
+    return await this.providerModel.find({}, { name: 1 }).exec();
   }
 
   async findAll(currentPage: number, limit: number, qs: string) {

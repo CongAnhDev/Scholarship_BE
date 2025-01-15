@@ -12,7 +12,7 @@ export class Question {
     option: string[];
 
     @Prop()
-    answer: string;
+    answer: string[];
 
     @Prop()
     quiz: number;

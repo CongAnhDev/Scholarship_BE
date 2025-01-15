@@ -50,7 +50,6 @@ export class ScholarshipController {
     return this.scholarshipService.getListCountry();
   }
 
-
   // @Public()
   // @Get('list-location')
   // @ResponseMessage("Fetch all location")
@@ -68,13 +67,6 @@ export class ScholarshipController {
   ) {
     return this.scholarshipService.findAll(+currentPage, +limit, qs); // Modify this line
   }
-
-  // @Public()
-  // @Get('search-list-scholarship')
-  // @ResponseMessage("get list scholarship of a provider")
-  // searchByProvider(@Query('id') id: string) {
-  //   return this.scholarshipService.searchByProvider(id);
-  // }
 
   @Public()
   @Get(':id')

@@ -25,14 +25,14 @@ export class QuizController {
   @Get()
   @ResponseMessage("Fetch List quiz with paginate")
   findAll(
-    @Query("current") currentPage: string,
+    @Query("current") currentPage: string, //test
     @Query("pageSize") limit: string,
     @Query() qs: string,
   ) {
     return this.quizService.findAll(+currentPage, +limit, qs); // Modify this line
   }
 
-  @SkipCheckPermission()
+  @Public()
   @Get(':id')
   @ResponseMessage("Fetch a quiz with id")
   findOne(@Param('id') id: string) {

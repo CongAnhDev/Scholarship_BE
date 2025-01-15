@@ -90,14 +90,14 @@ export class ChatService implements IChatService {
     ).length;
     const totalPages = Math.ceil(totalItems / defaultLimit);
     const query: FilterQuery<any> =
-      user.role.name.toUpperCase() === 'SUPER_ADMIN'
+      user.role.name.toUpperCase() === 'SUPER_ADMIN' || user.role.name.toUpperCase() === 'Staff'
         ? {}
         : {
-            $or: [
-              { user: new Types.ObjectId(user._id) },
-              { staff: new Types.ObjectId(user._id) },
-            ],
-          };
+          $or: [
+            { user: new Types.ObjectId(user._id) },
+            { staff: new Types.ObjectId(user._id) },
+          ],
+        };
     // const result = await this.conversationModel
     //   .find({
     //     ...find,

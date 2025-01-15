@@ -39,7 +39,7 @@ export class StudyController {
     return this.studyService.findAll(+currentPage, +limit, qs); // Modified: cast `currentPage` and `limit` to numbers.
   }
 
-  @SkipCheckPermission()
+  @Public()
   @Get(':id')
   @ResponseMessage("Fetch a studyAboard with id")
   findOne(@Param('id') id: string) {

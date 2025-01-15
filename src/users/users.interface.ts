@@ -12,5 +12,5 @@ export interface IUser {
         apiPath: string;
         module: string;
     }[]
-    avatar: string;
+    provider: string;
 }
