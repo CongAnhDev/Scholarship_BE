@@ -9,6 +9,8 @@ import { User, UserSchema } from 'src/users/schemas/user.schema';
 import { ResumeProvController } from './resume-prov.controller';
 import { ResumeProvService } from './resume-prov.service';
 import { ResumePro, ResumeProSchema } from './schemas/resume-prov.schemas';
+import { MailModule } from 'src/mail/mail.module';
+import { ExcelModule } from 'src/excel/excel.module';
 
 @Module({
   imports: [
@@ -18,8 +20,10 @@ import { ResumePro, ResumeProSchema } from './schemas/resume-prov.schemas';
       { name: User.name, schema: UserSchema },
     ]),
     CloudinaryModule,
+    ExcelModule,
+    MailModule,
   ],
   controllers: [ResumeProvController],
   providers: [ResumeProvService],
 })
-export class ResumeProvModule {}
+export class ResumeProvModule { }

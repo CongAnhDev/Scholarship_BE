@@ -6,18 +6,24 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Subscriber, SubscriberSchema } from 'src/subscribers/schemas/subscriber.schemas';
-import { Scholarship, ScholarshipSchema } from 'src/scholarship/schemas/scholarship.schemas';
+import {
+  Subscriber,
+  SubscriberSchema,
+} from 'src/subscribers/schemas/subscriber.schemas';
+import {
+  Scholarship,
+  ScholarshipSchema,
+} from 'src/scholarship/schemas/scholarship.schemas';
 @Module({
   imports: [
     MailerModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         transport: {
-          host: configService.get<string>("EMAIL_HOST"),
+          host: configService.get<string>('EMAIL_HOST'),
           secure: false,
           auth: {
-            user: configService.get<string>("EMAIL_AUTH_USER"),
-            pass: configService.get<string>("EMAIL_AUTH_PASS"),
+            user: configService.get<string>('EMAIL_AUTH_USER'),
+            pass: configService.get<string>('EMAIL_AUTH_PASS'),
           },
         },
         template: {
@@ -28,17 +34,19 @@ import { Scholarship, ScholarshipSchema } from 'src/scholarship/schemas/scholars
           },
         },
 
-        preview: configService.get<string>("EMAIL_PREVIEW") === "true" ? true : false,
+        preview:
+          configService.get<string>('EMAIL_PREVIEW') === 'true' ? true : false,
       }),
       inject: [ConfigService],
     }),
-//add mail 01234
+    //add mail 01234
     MongooseModule.forFeature([
       { name: Subscriber.name, schema: SubscriberSchema },
-      { name: Scholarship.name, schema: ScholarshipSchema }
-    ])
+      { name: Scholarship.name, schema: ScholarshipSchema },
+    ]),
   ],
   controllers: [MailController],
-  providers: [MailService]
+  providers: [MailService],
+  exports: [MailService],
 })
 export class MailModule { }

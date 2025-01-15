@@ -28,7 +28,7 @@ export class ResumeProvController {
   constructor(
     private readonly resumeProvService: ResumeProvService,
     private readonly cloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
 
   @Post()
   @SkipCheckPermission()

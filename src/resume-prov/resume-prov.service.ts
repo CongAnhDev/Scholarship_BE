@@ -7,7 +7,9 @@ import mongoose from 'mongoose';
 import { IUser } from 'src/users/users.interface';
 import { CreateUserCvProDto } from './dto/create-resume-prov.dto';
 import aqp from 'api-query-params';
-
+import { MailService } from 'src/mail/mail.service';
+import { ExcelService } from 'src/excel/excel.service';
+import { IExcel } from 'src/excel/excel.interface';
 
 @Injectable()
 export class ResumeProvService {
@@ -16,6 +18,8 @@ export class ResumeProvService {
     private resumeProModel: SoftDeleteModel<ResumeProDocument>,
     @InjectModel(User.name)
     private userModel: mongoose.Model<User>,
+    private readonly excelService: ExcelService,
+    private readonly mailService: MailService,
   ) { }
 
   async create(createUserCvProDto: CreateUserCvProDto, user: IUser) {
@@ -56,7 +60,7 @@ export class ResumeProvService {
     delete filter.current;
     delete filter.pageSize;
 
-    const offset = (+currentPage - 1) * (+limit);
+    const offset = (+currentPage - 1) * +limit;
     const defaultLimit = +limit ? +limit : 10;
 
     // Query tổng số bản ghi
@@ -102,12 +106,7 @@ export class ResumeProvService {
     ]);
   }
 
-  async update(
-    _id: string,
-    status: string,
-    note: string,
-    user: IUser,
-  ) {
+  async update(_id: string, status: string, note: string, user: IUser) {
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       throw new BadRequestException('not found resume');
     }
@@ -175,7 +174,7 @@ export class ResumeProvService {
     delete filter.current;
     delete filter.pageSize;
 
-    const offset = (+currentPage - 1) * (+limit);
+    const offset = (+currentPage - 1) * +limit;
     const defaultLimit = +limit ? +limit : 10;
 
     // Query tổng số bản ghi
@@ -193,6 +192,51 @@ export class ResumeProvService {
       .populate(population)
       .select(projection as any)
       .exec();
+
+    if (
+      result.length > 0 &&
+      ['Lịch phỏng vấn', 'Hồ sơ thành công'].includes(filter.status)
+    ) {
+      // generate excel file
+      const payload: IExcel[] = result.map((it) => ({
+        name: it.name,
+        email: it.email,
+        cvUrl: it.urlCV,
+        phone: (it.userId as any).phone,
+        school: (it.provider as any).name,
+        scholarship: (it.scholarProv as any).name,
+        createdAt: it.createdAt as any,
+        note: it.note,
+      }));
+      await this.excelService.generateFile(payload, filter.status);
+
+      // send mail
+      if (filter.status === 'Lịch phỏng vấn') {
+        await Promise.all(
+          payload.map((it) =>
+            this.mailService.sendInterviewInvitationLetter({
+              name: it.name,
+              providerName: it.school,
+              scholarshipName: it.scholarship,
+              receiverEmail: it.email,
+              timeAndAddress: it.note,
+            }),
+          ),
+        );
+      } else {
+        await Promise.all(
+          payload.map((it) =>
+            this.mailService.sendAdmissionLetter({
+              name: it.name,
+              providerName: it.school,
+              scholarshipName: it.scholarship,
+              receiverEmail: it.email,
+              note: it.note,
+            }),
+          ),
+        );
+      }
+    }
 
     return {
       meta: {
