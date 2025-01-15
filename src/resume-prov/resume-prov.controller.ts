@@ -9,7 +9,9 @@ import {
   Post,
   Query,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import {
   Public,
@@ -31,6 +33,13 @@ export class ResumeProvController {
   @Post()
   @SkipCheckPermission()
   @ResponseMessage('Create a new resume')
+  @UseInterceptors(
+    FileInterceptor('urlCV', {
+      limits: {
+        fileSize: 1024 * 1024 * 5,
+      },
+    }),
+  )
   async create(
     @UploadedFile() file: Express.Multer.File,
     @Body() createUserCvProDto: CreateUserCvProDto,
