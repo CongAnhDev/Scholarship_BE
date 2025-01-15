@@ -31,8 +31,6 @@ import { StudyModule } from './study/study.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { UsersModule } from './users/users.module';
-import { CrawlerModule } from './crawler/crawler.module';
-import { NewsModule } from './news/news.module';
 import { ScholarProvModule } from './scholar-prov/scholar-prov.module';
 import { ResumeProvModule } from './resume-prov/resume-prov.module';
 

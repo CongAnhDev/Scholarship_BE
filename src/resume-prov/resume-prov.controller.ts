@@ -1,19 +1,55 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ResumeProvService } from './resume-prov.service';
-import { Public, ResponseMessage, SkipCheckPermission, User } from 'src/decorator/customize';
-import { CreateUserCvProDto } from './dto/create-resume-prov.dto';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UploadedFile,
+} from '@nestjs/common';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import {
+  Public,
+  ResponseMessage,
+  SkipCheckPermission,
+  User,
+} from 'src/decorator/customize';
 import { IUser } from 'src/users/users.interface';
-
+import { CreateUserCvProDto } from './dto/create-resume-prov.dto';
+import { ResumeProvService } from './resume-prov.service';
 
 @Controller('resume-prov')
 export class ResumeProvController {
-  constructor(private readonly resumeProvService: ResumeProvService) { }
+  constructor(
+    private readonly resumeProvService: ResumeProvService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Post()
   @SkipCheckPermission()
-  @ResponseMessage("Create a new resume")
-  create(@Body() createUserCvProDto: CreateUserCvProDto, @User() user: IUser) {
-    return this.resumeProvService.create(createUserCvProDto, user);
+  @ResponseMessage('Create a new resume')
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createUserCvProDto: CreateUserCvProDto,
+    @User() user: IUser,
+  ) {
+    try {
+      const uploadedFileResponse =
+        await this.cloudinaryService.uploadFile(file);
+      const urlCV = uploadedFileResponse.url;
+      return this.resumeProvService.create(
+        {
+          ...createUserCvProDto,
+          urlCV,
+        },
+        user,
+      );
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @Post('by-user')
@@ -42,18 +78,17 @@ export class ResumeProvController {
 
   @Patch(':id')
   @SkipCheckPermission()
-  @ResponseMessage("Update a resume")
+  @ResponseMessage('Update a resume')
   update(
     @Param('id') id: string,
     @Body('status') status: string,
     @Body('note') note: string,
-    @User() user: IUser
-
+    @User() user: IUser,
   ) {
     return this.resumeProvService.update(id, status, note, user);
   }
 
-  @ResponseMessage("Delete a resume")
+  @ResponseMessage('Delete a resume')
   @SkipCheckPermission()
   @Delete(':id')
   remove(@Param('id') id: string, @User() user: IUser) {

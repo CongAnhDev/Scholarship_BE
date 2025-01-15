@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Logger,
@@ -285,7 +286,7 @@ export class ResumesController {
     }
   }
 
-  @ResponseMessage("Delete a resume")
+  @ResponseMessage('Delete a resume')
   @SkipCheckPermission()
   @Delete(':id')
   remove(@Param('id') id: string, @User() user: IUser) {
