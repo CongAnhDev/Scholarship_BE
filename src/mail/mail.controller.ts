@@ -81,11 +81,89 @@ export class MailController {
             to: subs.email,
             from: '"Support Team" <support@example.com>',
             subject: 'Welcome to Nice App! Confirm your Email',
-            template: 'scholarship',
-            context: {
-              receiver: subs.name,
-              scholarship: scholarship
-            }
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Hỏi Dân IT vs Eric</title>
+                    <meta charset="UTF-8">
+                </head>
+                <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';">
+                    <table style="max-width: 80rem; min-height: 100vh; padding: 2rem; margin: 0 auto; background-color: #f5f5f5;">
+                        <tr>
+                            <td align="center">
+                                <table style="background-color: white; border-radius: 5px; padding: 20px;">
+                                    <tr>
+                                        <td>
+                                            <div style="text-align: left; font-size: 20px;">SFMS</div>
+                                        </td>
+                                        <td>
+                                            <div style="text-align: right; font-size: 20px;">Thông Tin Học Bổng</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="margin: 15px 0; border-top: 1px solid rgba(5, 5, 5, 0.06);"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div style="text-align: left;">
+                                                <div style="font-size: 16px;">Hi ${subs.name},</div>
+                                                <div style="font-size: 16px;">Tìm Hiểu Học Bổng Hôm Nay nào!</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="margin: 15px 0; border-top: 1px dashed rgba(5, 5, 5, 0.06);"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <table>
+                                                ${scholarship.map(item => `
+                                                <tr>
+                                                    <td>
+                                                        <div style="font-size: 16px;">
+                                                            <a href="https://sfms.pages.dev/hoc-bong/${item.id}" target="_blank" style="text-decoration: none;"> ${item.name}</a>
+                                                        </div>
+                                                        <div style="font-size: 14px;">${item.location}</div>
+                                                        <div style="font-size: 14px;">${item.value}</div>
+                                                        <div>
+                                                            <span style="font-size: 14px;">Ngành Học: ${item.major.join(' - ')}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span style="font-size: 14px;">Cấp Bậc: ${item.level.join(' - ')}</span>
+                                                        </div>
+                                                        <div style="font-size: 14px; background-color: #e0f7fa; padding: 10px; border-radius: 5px;">
+                                                            <div style="font-weight: bold;">Yêu cầu học bổng</div>
+                                                            <div>Ielts: ${item.ielts}</div>
+                                                            <div>GPA: ${item.GPA}</div>
+                                                            <div>Chi phí sinh hoạt mỗi tháng: ${item.pay}$</div>
+                                                        </div>
+                                                        <div style="margin: 15px 0; border-top: 1px dashed rgba(5, 5, 5, 0.06);"></div>
+                                                    </td>
+                                                </tr>`).join('')}
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="text-align: center;">
+                                            <a href="https://sfms.pages.dev/" target="_blank" style="display: inline-block; width: 100%; height: 40px; line-height: 40px; cursor: pointer; border-radius: 5px; background-color: #ea1e30; color: white; border: none; outline: none; text-decoration: none; font-size: 16px;">
+                                                Xem thêm học bổng tại SFMS
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div style="padding-top: 20px; text-align: left; font-size: 16px;">Cheers,</div>
+                                            <div style="text-align: left; font-size: 16px;">SFMS.</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+                </html>
+            `,
           });
         }
       }
