@@ -105,7 +105,6 @@ export class ResumeProvController {
   }
 
   @Post('excel')
-  @Public()
   @ResponseMessage('export resumes to excel')
   export(
     @Query('current') currentPage: string,
