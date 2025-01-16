@@ -5,34 +5,34 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { ChatModule } from 'src/chat/chat.module';
+import { DashboardModule } from 'src/dashboard/dashboard.module';
 import { AdvisoryModule } from './advisory/advisory.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { BlogModule } from './blog/blog.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { CrawlerModule } from './crawler/crawler.module';
 import { DatabasesModule } from './databases/databases.module';
+import { ExcelModule } from './excel/excel.module';
 import { FilesModule } from './files/files.module';
 import { HealthModule } from './health/health.module';
 import { InvitationModule } from './invitation/invitation.module';
 import { MailModule } from './mail/mail.module';
+import { NewsModule } from './news/news.module';
 import { PayOSModule } from './payos/payos.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { ProviderModule } from './provider/providers.module';
 import { QuestionModule } from './question/question.module';
 import { QuizModule } from './quiz/quiz.module';
+import { ResumeProvModule } from './resume-prov/resume-prov.module';
 import { ResumesModule } from './resumes/resumes.module';
 import { RolesModule } from './roles/roles.module';
+import { ScholarProvModule } from './scholar-prov/scholar-prov.module';
 import { ScholarshipModule } from './scholarship/scholarship.module';
 import { StudyModule } from './study/study.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { UsersModule } from './users/users.module';
-import { CrawlerModule } from './crawler/crawler.module';
-import { NewsModule } from './news/news.module';
-import { ScholarProvModule } from './scholar-prov/scholar-prov.module';
-import { ResumeProvModule } from './resume-prov/resume-prov.module';
-import { ExcelModule } from './excel/excel.module';
-
 
 @Module({
   imports: [
@@ -58,7 +58,7 @@ import { ExcelModule } from './excel/excel.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
+    DashboardModule,
     UsersModule,
     AuthModule,
     ProviderModule,
@@ -89,4 +89,4 @@ import { ExcelModule } from './excel/excel.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
