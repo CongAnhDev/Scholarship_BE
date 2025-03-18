@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { SkipCheckPermission } from 'src/decorator/customize';
+import { Public, SkipCheckPermission } from 'src/decorator/customize';
 import { ResumesService } from 'src/resumes/resumes.service';
 import { TransactionService } from 'src/transaction/transaction.service';
 
@@ -10,7 +10,7 @@ export class DashboardController {
     private readonly resumeService: ResumesService,
   ) {}
 
-  @SkipCheckPermission()
+  @Public()
   @Get()
   async getStatics() {
     // 1. Transactions
@@ -58,13 +58,13 @@ export class DashboardController {
     };
   }
 
-  @SkipCheckPermission()
+  @Public()
   @Get('transactions')
   async getTransactions(@Query('groupBy') groupBy: 'day' | 'month' = 'month') {
     return this.transactionService.getTransactions(groupBy);
   }
 
-  @SkipCheckPermission()
+  @Public()
   @Get('resumes')
   async getResumes(@Query('groupBy') groupBy: 'day' | 'month' = 'month') {
     return this.resumeService.getAllGroupBy(groupBy);
